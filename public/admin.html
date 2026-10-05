@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Software-Marktplatz – Admin</title>
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<div id="login-view" class="auth-wrap">
+  <form id="login-form" class="auth-card">
+    <h1>Admin-Login</h1>
+    <p>Bitte das Admin-Passwort eingeben, um Programme zu verwalten.</p>
+    <label>
+      Passwort
+      <input type="password" id="login-password" autocomplete="current-password" required />
+    </label>
+    <button type="submit" class="btn btn-primary">Anmelden</button>
+    <p id="login-error" class="error-text hidden"></p>
+  </form>
+</div>
+
+<div id="admin-view" class="hidden">
+  <header class="admin-header">
+    <h1>Software-Marktplatz – Backend</h1>
+    <div class="header-actions">
+      <a href="index.html" class="btn btn-secondary">↩ Zur Webseite</a>
+      <button id="logout-btn" class="btn btn-secondary">Abmelden</button>
+    </div>
+  </header>
+
+  <nav class="admin-tabs">
+    <button class="tab-btn active" data-tab="stands">Programme</button>
+    <button class="tab-btn" data-tab="requests">Eingegangene Anforderungen</button>
+  </nav>
+
+  <section id="tab-stands" class="tab-panel">
+    <div class="panel-split">
+      <div class="panel-list">
+        <div class="panel-list-head">
+          <h2>Alle Programme</h2>
+          <button id="new-stand-btn" class="btn btn-primary">+ Neues Programm</button>
+        </div>
+        <div class="import-export-bar">
+          <button id="export-all-btn" class="btn btn-secondary" type="button">⇩ Alle exportieren</button>
+          <label class="upload-label">
+            ⇧ Importieren
+            <input type="file" id="import-file-input" accept="application/json" />
+          </label>
+        </div>
+        <p class="muted reorder-hint">Ziehen Sie Einträge an der Markierung ⠿, um die Reihenfolge auf der Webseite zu ändern (4 Schaufenster pro Zeile).</p>
+        <ul id="admin-stand-list"></ul>
+      </div>
+
+      <div class="panel-detail">
+        <form id="stand-form" class="hidden">
+          <h2 id="form-title">Programm bearbeiten</h2>
+
+          <div class="form-grid">
+            <label>
+              Name der Software *
+              <input type="text" id="f-name" required />
+            </label>
+            <label>
+              Kategorie (z. B. Projektmanagement)
+              <input type="text" id="f-category" />
+            </label>
+          </div>
+
+          <label>
+            Kurzer Hinweis für die Kachel
+            <input type="text" id="f-tagline" placeholder="Wofür wird die Software genutzt?" />
+          </label>
+
+          <label>
+            Infotext: Funktionen &amp; Nutzen
+            <textarea id="f-description" rows="5"></textarea>
+          </label>
+
+          <label>
+            Beschaffung (wie kommt man an die Software / Lizenz?)
+            <textarea id="f-procurement" rows="3"></textarea>
+          </label>
+
+          <div class="form-grid">
+            <label>
+              Anleitung – externer Link (optional)
+              <input type="url" id="f-instructions-url" placeholder="https://..." />
+            </label>
+            <label>
+              n8n-Webhook für dieses Programm (optional, überschreibt globalen Webhook)
+              <input type="url" id="f-webhook" placeholder="https://n8n.example.com/webhook/..." />
+            </label>
+          </div>
+
+          <fieldset class="request-mode-field">
+            <legend>Art der Anforderung</legend>
+            <label class="radio-label">
+              <input type="radio" name="f-request-mode" id="f-request-mode-form" value="form" checked />
+              Formular an die IT-Strategie senden
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="f-request-mode" id="f-request-mode-url" value="url" />
+              Eigene Registrierungsseite (Mitarbeitende melden sich dort selbst an)
+            </label>
+            <label id="f-request-url-wrap" class="hidden">
+              Link zur Registrierungsseite
+              <input type="url" id="f-request-url" placeholder="https://..." />
+            </label>
+          </fieldset>
+
+          <fieldset class="required-uploads-field">
+            <legend>Erforderliche Uploads vor Freischaltung</legend>
+            <p class="form-hint">
+              Z. B. Zertifikate, die vor der Freischaltung vorliegen müssen. Diese Dateien müssen
+              beim Senden der Anforderung hochgeladen werden – unabhängig davon, ob oben
+              "Formular" oder "Eigene Registrierungsseite" gewählt ist.
+            </p>
+            <div id="required-uploads-list"></div>
+            <button type="button" id="add-required-upload-btn" class="btn btn-secondary">+ Datei-Anforderung hinzufügen</button>
+          </fieldset>
+
+          <div class="form-grid">
+            <label>
+              Akzentfarbe der Kachel
+              <input type="color" id="f-color" value="#2f6fed" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancel-edit-btn" class="btn btn-secondary">Abbrechen</button>
+            <button type="submit" class="btn btn-primary" id="save-stand-btn">Speichern</button>
+          </div>
+        </form>
+
+        <div id="media-section" class="hidden">
+          <h2>Medien &amp; Anleitung</h2>
+
+          <div class="media-block">
+            <h3>Dieses Programm exportieren</h3>
+            <button id="export-stand-btn" class="btn btn-secondary" type="button">Als Datei exportieren</button>
+          </div>
+
+          <div class="media-block">
+            <h3>Screenshots</h3>
+            <div id="screenshot-grid" class="screenshot-grid"></div>
+            <label class="upload-label">
+              Screenshots hinzufügen
+              <input type="file" id="screenshot-input" accept="image/*" multiple />
+            </label>
+          </div>
+
+          <div class="media-block">
+            <h3>Anleitung als Datei hochladen (PDF, etc.)</h3>
+            <p id="current-instructions-file" class="muted"></p>
+            <label class="upload-label">
+              Datei auswählen
+              <input type="file" id="instructions-file-input" />
+            </label>
+          </div>
+
+          <div class="media-block danger-zone">
+            <h3>Programm löschen</h3>
+            <button id="delete-stand-btn" class="btn btn-danger">Dieses Programm unwiderruflich löschen</button>
+          </div>
+        </div>
+
+        <div id="empty-detail" class="empty-detail">
+          Wähle links ein Programm aus oder lege ein neues an.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-requests" class="tab-panel hidden">
+    <h2>Eingegangene Anforderungen</h2>
+
+    <div class="requests-stats">
+      <h3>Häufigkeit nach Software</h3>
+      <div id="requests-stats-list" class="requests-stats-list"></div>
+    </div>
+
+    <div class="requests-actions">
+      <button id="delete-selected-requests-btn" class="btn btn-danger" disabled>Ausgewählte löschen (<span id="selected-requests-count">0</span>)</button>
+      <button id="delete-all-requests-btn" class="btn btn-danger">Alle löschen</button>
+    </div>
+    <table id="requests-table">
+      <thead>
+        <tr>
+          <th class="col-checkbox"><input type="checkbox" id="select-all-requests" /></th>
+          <th>Datum</th>
+          <th>Software</th>
+          <th>Von</th>
+          <th>Nachricht</th>
+          <th>Unterlagen</th>
+          <th>Webhook-Status</th>
+        </tr>
+      </thead>
+      <tbody id="requests-tbody"></tbody>
+    </table>
+  </section>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+services:
+  software-it:
+    image: ghcr.io/mcinferno79/software-it:latest
+    container_name: software-it
+    restart: unless-stopped
+    ports:
+      - "8045:3000"
+    environment:
+      PORT: "3000"
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-bitte-aendern}
+      SESSION_SECRET: ${SESSION_SECRET:-bitte-durch-zufaelligen-wert-ersetzen}
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-}
+    volumes:
+      - software_it_data:/app/data
+      - software_it_uploads:/app/uploads
+
+volumes:
+  software_it_data:
+  software_it_uploads:

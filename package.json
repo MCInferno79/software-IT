@@ -1,0 +1,21 @@
+{
+  "name": "software-it",
+  "version": "1.0.0",
+  "description": "Software-Marktplatz der Stadtverwaltung - Uebersicht intern betreuter Software-Loesungen",
+  "private": true,
+  "type": "commonjs",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "multer": "^2.0.0"
+  }
+}

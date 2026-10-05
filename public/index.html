@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Software-Marktplatz der Stadtverwaltung</title>
+<meta name="description" content="Übersicht der von der IT-Strategie betreuten Software-Lösungen." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header id="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="icon"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+        </span>
+        Software&#8209;Marktplatz
+      </div>
+      <nav class="topbar-nav">
+        <a href="admin.html" class="admin-link" title="Backend / Programme verwalten">
+          <svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 0 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 0 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 0 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 0 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+          Admin
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="page">
+    <section class="hero">
+      <div class="hero-inner">
+        <h1>Software-Schaufenster der Stadtverwaltung</h1>
+        <p>
+          Hier finden Sie die von der IT-Strategie intern betreuten Software-Lösungen im
+          Überblick. Wählen Sie ein Programm aus, um mehr zu erfahren und bei Bedarf Zugang
+          anzufordern.
+        </p>
+        <div class="hero-search">
+          <svg viewBox="0 0 24 24" class="icon"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" id="search-input" placeholder="Programm oder Kategorie suchen…" aria-label="Programme durchsuchen" />
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase">
+      <div class="showcase-inner">
+        <div id="program-grid" class="program-grid"></div>
+        <p id="program-empty" class="program-empty hidden">Keine Programme gefunden.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="page-footer">
+    <p>Ein Angebot der IT-Strategie der Stadtverwaltung</p>
+  </footer>
+
+  <div id="stand-modal" class="hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel">
+      <button id="modal-close" aria-label="Schließen">
+        <svg viewBox="0 0 24 24" class="icon"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="modal-header">
+        <span id="modal-category" class="category-badge"></span>
+        <h2 id="modal-title"></h2>
+        <p id="modal-tagline"></p>
+      </div>
+
+      <div class="modal-body">
+        <div class="carousel" id="carousel">
+          <button class="carousel-nav prev" id="carousel-prev" aria-label="Vorheriges Bild">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <div class="carousel-track-wrap">
+            <div class="carousel-track" id="carousel-track"></div>
+          </div>
+          <button class="carousel-nav next" id="carousel-next" aria-label="Nächstes Bild">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="carousel-dots" id="carousel-dots"></div>
+          <div id="carousel-empty" class="carousel-empty hidden">Noch keine Screenshots hinterlegt.</div>
+        </div>
+
+        <div class="info-stack">
+          <section class="info-primary">
+            <h3>Funktionen &amp; Nutzen</h3>
+            <p id="modal-description" class="pre-wrap"></p>
+          </section>
+          <section class="info-secondary">
+            <h3>Beschaffung</h3>
+            <p id="modal-procurement" class="pre-wrap"></p>
+          </section>
+        </div>
+
+        <div class="modal-actions">
+          <a id="modal-instructions" class="btn btn-secondary hidden" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+            Anleitung öffnen
+          </a>
+          <button id="modal-request-btn" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M4 4h16v16H4Z"/><path d="m4 5 8 7 8-7"/></svg>
+            Anforderung an IT-Strategie senden
+          </button>
+        </div>
+
+        <form id="request-form" class="hidden">
+          <h3>Anforderung senden</h3>
+          <p class="form-hint">Alle Felder sind Pflichtfelder.</p>
+          <label>
+            Name *
+            <input type="text" id="req-name" autocomplete="name" required />
+          </label>
+          <label>
+            E-Mail *
+            <input type="email" id="req-email" autocomplete="email" required />
+          </label>
+          <label>
+            Nachricht / Begründung *
+            <textarea id="req-message" rows="3" placeholder="Warum benötigen Sie Zugang bzw. Infos zu dieser Software?" required></textarea>
+          </label>
+          <div id="req-uploads"></div>
+          <div class="form-actions">
+            <button type="button" id="req-cancel" class="btn btn-secondary">Abbrechen</button>
+            <button type="submit" class="btn btn-primary">Absenden</button>
+          </div>
+          <p id="req-status" class="req-status hidden"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
